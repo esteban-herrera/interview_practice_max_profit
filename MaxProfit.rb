@@ -44,35 +44,74 @@ class MaxProfit
 		sell_value = prices[0]
 		sell_index = 0
 		profit = 0
-		potential_buy_value = prices[0]
-		needed_sell_value = potential_buy_value + profit + 1
+		potential_buy_value = nil
+		potential_buy_value_index = nil
+		needed_sell_value = nil
 
 
 		prices.each_with_index do |value, index|
-			# is it a higher price to sell at? this always makes sense to do
+			value = value.to_i
+			if $DEBUG
+				puts "Value:#{value} => index:#{index}"
+				puts "BEFORE ----------------"
+				puts "buy_value = #{buy_value}"
+				puts "buy_index = #{buy_index}"
+				puts "sell_value = #{sell_value}"
+				puts "sell_index = #{sell_index}"
+				puts "profit = #{profit}"
+				puts "potential_buy_value = #{potential_buy_value}"
+				puts "potential_buy_value_index = #{potential_buy_value_index}"
+				puts "needed_sell_value = #{needed_sell_value}"
+			end
+			# Is it a higher price to sell at? 
+			# then update, this always makes sense to do
 			if value > sell_value
+				# sell at this value
 				sell_value = value
 				sell_index = index
-				profit = sell_value.to_i - buy_value.to_i
+				# recalculate profit with new sell_value
+				profit = sell_value - buy_value
 			end
 
-			if value < buy_value
-				# it is a potentially better buying price
+			# Does this value warrant using the potential buy value instead?
+			if !needed_sell_value.nil? && value >= needed_sell_value
+				buy_value = potential_buy_value
+				buy_index = potential_buy_value_index
+				sell_value = value
+				sell_index = index
+				profit = sell_value - buy_value				
+				needed_sell_value = buy_value + profit + 1 
+			end
+
+			# Is this value lower than our best buy value so far?
+			# Then it MIGHT be a better buy value
+			if value < buy_value  # also needs to be lower than the current potential buying, assuming not nil
+				# Save this as a maybe better buy value
 				potential_buy_value = value
+				potential_buy_value_index = index
+				# Calculate what sell value would warrany updating
 				needed_sell_value = value + profit + 1
 			end
-
-			if value >= needed_sell_value
-				buy_value = potential_buy_value
-				sell_value = value
-				sell_index = index
-				needed_sell_value = value
-				profit = sell_value.to_i - buy_value.to_i				
-			end
+			if $DEBUG			
+				puts "AFTER ----------------"
+				puts "buy_value = #{buy_value}"
+				puts "buy_index = #{buy_index}"
+				puts "sell_value = #{sell_value}"
+				puts "sell_index = #{sell_index}"
+				puts "profit = #{profit}"
+				puts "potential_buy_value = #{potential_buy_value}"
+				puts "potential_buy_value_index = #{potential_buy_value_index}"
+				puts "needed_sell_value = #{needed_sell_value}"
+				puts
+			end	
 		end
-		puts "Buy #{buy_value}"
-		puts "Sell #{sell_value}"
-		puts
-		profit
+
+		if $DEBUG
+			puts "Buy #{buy_value}"
+			puts "Sell #{sell_value}"
+			puts
+		end
+	
+		return profit
 	end
 end

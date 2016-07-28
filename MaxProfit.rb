@@ -56,12 +56,7 @@ class MaxProfit
 				profit = sell_value.to_i - buy_value.to_i
 			end
 
-			# is it a lower price to buy at?
-			if value < buy_value && index < sell_index
-				buy_value = value
-				profit = sell_value.to_i - buy_value.to_i				
-			end
-			if value < buy_value && index > sell_index
+			if value < buy_value
 				# it is a potentially better buying price
 				potential_buy_value = value
 				needed_sell_value = value + profit + 1
@@ -75,9 +70,9 @@ class MaxProfit
 				profit = sell_value.to_i - buy_value.to_i				
 			end
 		end
-		# puts "Buy #{buy_value}"
-		# puts "Sell #{sell_value}"
-		# puts
+		puts "Buy #{buy_value}"
+		puts "Sell #{sell_value}"
+		puts
 		profit
 	end
 end

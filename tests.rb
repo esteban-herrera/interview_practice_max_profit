@@ -54,4 +54,10 @@ class TestMaxProfit < MiniTest::Test
 		actual = MaxProfit.find_max_profit_efficient([5,13,3,12])
 		assert_equal 9, actual
 	end
+
+	def test_difficult_small_arr_efficient_dad
+		actual = MaxProfit.find_max_profit_efficient([3,4,1,2,5])
+		assert_equal 4, actual
+	end
+
 end

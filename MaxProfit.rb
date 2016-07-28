@@ -44,7 +44,7 @@ class MaxProfit
 		sell_value = prices[0]
 		sell_index = 0
 		profit = 0
-		potential_buy_value = nil
+		potential_buy_value = prices[0]
 		potential_buy_value_index = nil
 		needed_sell_value = nil
 
@@ -85,11 +85,14 @@ class MaxProfit
 
 			# Is this value lower than our best buy value so far?
 			# Then it MIGHT be a better buy value
-			if value < buy_value  # also needs to be lower than the current potential buying, assuming not nil
+
+			# also needs to be lower than the current potential buying, 
+			# assuming not nil
+			if value < buy_value && (!potential_buy_value.nil?  && value < potential_buy_value)
 				# Save this as a maybe better buy value
 				potential_buy_value = value
 				potential_buy_value_index = index
-				# Calculate what sell value would warrany updating
+				# Calculate what sell value would warrant updating
 				needed_sell_value = value + profit + 1
 			end
 			if $DEBUG			
